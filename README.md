@@ -1,6 +1,6 @@
 This is the Electric Vehicle (EV) for the Science Club at Cedar Falls High School.
 
-### File: EV_CODE_2024
+### File: EV_CODE_24
 
 - **Function setup:**
   - Configures the pins for the motor and the encoder.

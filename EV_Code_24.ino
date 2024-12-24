@@ -1,4 +1,5 @@
-// Source from: https://github.com/YahboomTechnology/Motor-with-Encoder
+// Some code in this file is inspired by the Yahboom Motor with Encoder project
+// Source: https://github.com/YahboomTechnology/Motor-with-Encoder
 
 // Motor Control Pins
 int motor_c_ENA = 9;  // Speed Control
@@ -9,16 +10,13 @@ int motor_c_IN2 = 7;
 #define ENCODER_A_PIN 2
 #define ENCODER_B_PIN 3
 
-// target distance configuration
 const long target_distance_pulses = 3057; 
 long pulse_count = 0; 
 
-// speed sontrol variables
+// speed control variables
 int max_speed = 255;
 int min_speed = 100;
 int slow_down_threshold = 1000; 
-
-#include <MsTimer2.h>
 
 void setup() {
     // Motor Pin Setup
@@ -41,8 +39,12 @@ void loop() {
     // Dynamically adjust speed based on remaining distance
     int current_speed = max_speed;
     if (remaining_pulses <= slow_down_threshold) {
-        current_speed = map(remaining_pulses, 0, slow_down_threshold, min_speed, max_speed);
-        current_speed = constrain(current_speed, min_speed, max_speed);
+        current_speed = min_speed + (remaining_pulses * (max_speed - min_speed)) / slow_down_threshold;
+        if (current_speed > max_speed) {
+            current_speed = max_speed;
+        } else if (current_speed < min_speed) {
+            current_speed = min_speed;
+        }
     }
 
     // Move forward
